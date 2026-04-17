@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creative Design Portfolio - Visual Storytelling & Digital Excellence</title>
+    <meta name="description" content="Professional design portfolio showcasing expertise in Adobe Creative Suite, UI/UX design, branding, and digital creativity">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Animation Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    
+    <style>
+        :root {
+            --primary-dark: #1a1a1a;
+            --primary-light: #fafafa;
+            --accent-coral: #ff6b6b;
+            --sage-green: #6c7b7f;
+            --soft-gray: #e8e8e8;
+            --muted-blue: #7c9885;
+            --warm-beige: #f5f3f0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, #2a2a2a 100%);
+            color: var(--primary-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .font-display {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+        }
+        
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        /* Navigation */
+        .nav-glass {
+            backdrop-filter: blur(20px);
+            background: rgba(26, 26, 26, 0.8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-coral);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+        
+        /* Hero Section */
+        .hero-bg {
+            background: linear-gradient(135deg, rgba(26, 26, 26, 0.7), rgba(42, 42, 42, 0.8)),
+                        url('resources/hero-design.jpg') center/cover;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+        
+        .hero-content {
+            z-index: 2;
+        }
+        
+        .typewriter-text {
+            color: var(--accent-coral);
+        }
+        
+        /* Design Tools Section */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .tool-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-8px) rotateX(5deg);
+            background: rgba(255, 107, 107, 0.1);
+            border-color: var(--accent-coral);
+            box-shadow: 0 20px 40px rgba(255, 107, 107, 0.2);
+        }
+        
+        .tool-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 2.5rem;
+            color: var(--accent-coral);
+        }
+        
+        .tool-name {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--primary-light);
+        }
+        
+        /* Projects Section */
+        .project-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            border-color: var(--accent-coral);
+        }
+        
+        .project-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+        
+        .project-card:hover .project-image {
+            transform: scale(1.05);
+        }
+        
+        .project-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.9), rgba(108, 123, 127, 0.9));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .project-card:hover .project-overlay {
+            opacity: 1;
+        }
+        
+        /* Skills Section */
+        .skill-bar {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            height: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .skill-progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-coral), var(--muted-blue));
+            border-radius: 50px;
+            transition: width 1.5s ease;
+            width: 0;
+        }
+        
+        /* Loading Animation */
+        .loading-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .loading-bar {
+            width: 200px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .loading-progress {
+            height: 100%;
+            background: var(--accent-coral);
+            border-radius: 2px;
+            animation: loading 2s ease-in-out infinite;
+        }
+        
+        @keyframes loading {
+            0% { width: 0%; }
+            50% { width: 100%; }
+            100% { width: 0%; }
+        }
+        
+        /* Scroll Animations */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+        
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .tools-grid {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+                gap: 1rem;
+            }
+            
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-content p {
+                font-size: 1rem;
+            }
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--primary-dark);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-coral);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--muted-blue);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav-glass fixed top-0 left-0 right-0 z-50 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="font-display text-xl font-bold text-white">
+                Design Portfolio
+            </div>
+            
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="index.html" class="nav-link active text-white hover:text-coral-400">Home</a>
+                <a href="projects.html" class="nav-link text-white hover:text-coral-400">Projects</a>
+                <a href="about.html" class="nav-link text-white hover:text-coral-400">About</a>
+                <a href="contact.html" class="nav-link text-white hover:text-coral-400">Contact</a>
+            </div>
+            
+            <button class="md:hidden text-white" id="mobile-menu-btn">
+                <i class="fa-solid fa-bars text-xl"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-bg">
+        <div class="hero-content max-w-7xl mx-auto px-6">
+            <div class="max-w-4xl">
+                <h1 class="font-display text-5xl md:text-7xl font-bold mb-6 leading-tight">
+                    Creative <span class="typewriter-text" id="typed-text"></span>
+                </h1>
+                <p class="text-xl md:text-2xl mb-8 text-gray-300 leading-relaxed">
+                    Transforming ideas into compelling visual experiences through innovative design and cutting-edge creativity
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="projects.html" class="bg-coral-500 hover:bg-coral-600 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 hover:transform hover:scale-105">
+                        View My Work
+                    </a>
+                    <a href="contact.html" class="border border-gray-400 hover:border-coral-500 text-white hover:text-coral-400 px-8 py-4 rounded-lg font-semibold transition-all duration-300">
+                        Get In Touch
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Design Tools Showcase -->
+    <section class="py-20 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 fade-in-up">
+                <h2 class="font-display text-4xl md:text-5xl font-bold mb-6">Design Tools Mastery</h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    Proficient in industry-leading design software with years of experience creating exceptional digital experiences
+                </p>
+            </div>
+            
+            <!-- Loading Status -->
+            <div class="loading-container justify-center fade-in-up">
+                <p id="status" class="font-mono text-sm text-gray-400">Loading languages from Adobe Creative Suite...</p>
+                <div class="loading-bar">
+                    <div class="loading-progress"></div>
+                </div>
+            </div>
+            
+            <!-- Design Tools Grid -->
+            <div class="tools-grid fade-in-up" id="adobedesign">
+                <div class="tool-card" data-tool="photoshop">
+                    <i class="fa-solid fa-image tool-icon" aria-hidden="true"></i>
+                    <div class="tool-name">Photoshop</div>
+                </div>
+                
+                <div class="tool-card" data-tool="illustrator">
+                    <i class="fa-solid fa-pen-ruler tool-icon" aria-hidden="true"></i>
+                    <div class="tool-name">Illustrator</div>
+                </div>
+                
+                <div class="tool-card" data-tool="xd">
+                    <i class="fa-solid fa-object-group tool-icon" aria-hidden="true"></i>
+                    <div class="tool-name">Adobe XD</div>
+                </div>
+                
+                <div class="tool-card" data-tool="after-effects">
+                    <i class="fa-solid fa-film tool-icon" aria-hidden="true"></i>
+                    <div class="tool-name">After Effects</div>
+                </div>
+                
+                <div class="tool-card" data-tool="figma">
+                    <i class="fa-brands fa-figma tool-icon" aria-hidden="true"></i>
+                    <div class="tool-name">Figma</div>
+                </div>
+                
+                <div class="tool-card" data-tool="lightroom">
+                    <i class="fa-solid fa-camera-retro tool-icon" aria-hidden="true"></i>
+                    <div class="tool-name">Lightroom</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Projects -->
+    <section class="py-20 px-6 bg-gradient-to-b from-transparent to-gray-900/20">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 fade-in-up">
+                <h2 class="font-display text-4xl md:text-5xl font-bold mb-6">Featured Projects</h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    A curated selection of recent work showcasing diverse design capabilities and creative problem-solving
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 fade-in-up">
+                <div class="project-card relative group">
+                    <div class="relative overflow-hidden">
+                        <img src="resources/project-web.jpg" alt="Web Design Project" class="project-image">
+                        <div class="project-overlay">
+                            <span>View Project</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">E-Commerce Platform</h3>
+                        <p class="text-gray-400 mb-4">Modern web design with focus on user experience and conversion optimization</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-coral-500/20 text-coral-400 rounded-full text-sm">Web Design</span>
+                            <span class="px-3 py-1 bg-blue-500/20 text-blue-400 rounded-full text-sm">UI/UX</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-card relative group">
+                    <div class="relative overflow-hidden">
+                        <img src="resources/project-branding.jpg" alt="Branding Project" class="project-image">
+                        <div class="project-overlay">
+                            <span>View Project</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">Brand Identity Design</h3>
+                        <p class="text-gray-400 mb-4">Complete brand identity system including logo, typography, and guidelines</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-green-500/20 text-green-400 rounded-full text-sm">Branding</span>
+                            <span class="px-3 py-1 bg-purple-500/20 text-purple-400 rounded-full text-sm">Identity</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-card relative group">
+                    <div class="relative overflow-hidden">
+                        <img src="resources/project-mobile.jpg" alt="Mobile App Design" class="project-image">
+                        <div class="project-overlay">
+                            <span>View Project</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">Mobile App UI</h3>
+                        <p class="text-gray-400 mb-4">Intuitive mobile application design with focus on usability and aesthetics</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-yellow-500/20 text-yellow-400 rounded-full text-sm">Mobile</span>
+                            <span class="px-3 py-1 bg-blue-500/20 text-blue-400 rounded-full text-sm">App Design</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12 fade-in-up">
+                <a href="projects.html" class="bg-transparent border-2 border-coral-500 text-coral-400 hover:bg-coral-500 hover:text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300">
+                    View All Projects
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Visualization -->
+    <section class="py-20 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 fade-in-up">
+                <h2 class="font-display text-4xl md:text-5xl font-bold mb-6">Skills & Expertise</h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    Years of experience across multiple design disciplines and technologies
+                </p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto fade-in-up">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-semibold mb-6">Design Tools</h3>
+                        <div class="space-y-6">
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span>Adobe Creative Suite</span>
+                                    <span class="text-coral-400">95%</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" data-width="95"></div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span>Figma</span>
+                                    <span class="text-coral-400">90%</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" data-width="90"></div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span>Sketch</span>
+                                    <span class="text-coral-400">85%</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" data-width="85"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-xl font-semibold mb-6">Design Disciplines</h3>
+                        <div class="space-y-6">
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span>UI/UX Design</span>
+                                    <span class="text-coral-400">92%</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" data-width="92"></div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span>Branding & Identity</span>
+                                    <span class="text-coral-400">88%</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" data-width="88"></div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span>Web Design</span>
+                                    <span class="text-coral-400">90%</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" data-width="90"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-20 px-6 bg-gradient-to-r from-coral-500/10 to-blue-500/10">
+        <div class="max-w-4xl mx-auto text-center fade-in-up">
+            <h2 class="font-display text-4xl md:text-5xl font-bold mb-6">Ready to Create Something Amazing?</h2>
+            <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+                Let's collaborate on your next project and bring your vision to life with exceptional design
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="contact.html" class="bg-coral-500 hover:bg-coral-600 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 hover:transform hover:scale-105">
+                    Start a Project
+                </a>
+                <a href="about.html" class="border border-gray-400 hover:border-coral-500 text-white hover:text-coral-400 px-8 py-4 rounded-lg font-semibold transition-all duration-300">
+                    Learn More About Me
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 px-6 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto text-center">
+            <div class="font-display text-xl font-bold mb-4">Design Portfolio</div>
+            <p class="text-gray-400 mb-6">Creating exceptional digital experiences through thoughtful design</p>
+            <div class="flex justify-center space-x-6 mb-6">
+                <a href="#" class="text-gray-400 hover:text-coral-400 transition-colors">
+                    <i class="fa-brands fa-x-twitter text-2xl" aria-hidden="true"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-coral-400 transition-colors">
+                    <i class="fa-brands fa-linkedin-in text-2xl" aria-hidden="true"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-coral-400 transition-colors">
+                    <i class="fa-brands fa-dribbble text-2xl" aria-hidden="true"></i>
+                </a>
+            </div>
+            <p class="text-gray-500 text-sm">
+                © 2024 Design Portfolio. All rights reserved. Crafted with passion and precision.
+            </p>
+        </div>
+    </footer>
+
+    <script src="src/js/main.js"></script>
+</body>
+</html>

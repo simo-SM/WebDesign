@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects - Design Portfolio</title>
+    <meta name="description" content="Explore a comprehensive collection of design projects including web design, branding, UI/UX, and digital creative work">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Animation Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css">
+    
+    <style>
+        :root {
+            --primary-dark: #1a1a1a;
+            --primary-light: #fafafa;
+            --accent-coral: #ff6b6b;
+            --sage-green: #6c7b7f;
+            --soft-gray: #e8e8e8;
+            --muted-blue: #7c9885;
+            --warm-beige: #f5f3f0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, #2a2a2a 100%);
+            color: var(--primary-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .font-display {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+        }
+        
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        /* Navigation */
+        .nav-glass {
+            backdrop-filter: blur(20px);
+            background: rgba(26, 26, 26, 0.8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-coral);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+        
+        /* Project Filter */
+        .filter-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--primary-light);
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--accent-coral);
+            border-color: var(--accent-coral);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        /* Project Cards */
+        .project-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        .project-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            border-color: var(--accent-coral);
+        }
+        
+        .project-card.hidden {
+            opacity: 0;
+            transform: scale(0.8);
+            pointer-events: none;
+        }
+        
+        .project-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+        
+        .project-card:hover .project-image {
+            transform: scale(1.1);
+        }
+        
+        .project-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.9), rgba(108, 123, 127, 0.9));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .project-card:hover .project-overlay {
+            opacity: 1;
+        }
+        
+        /* Project Categories */
+        .category-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .category-web {
+            background: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+        }
+        
+        .category-branding {
+            background: rgba(34, 197, 94, 0.2);
+            color: #4ade80;
+        }
+        
+        .category-uiux {
+            background: rgba(168, 85, 247, 0.2);
+            color: #a78bfa;
+        }
+        
+        .category-mobile {
+            background: rgba(249, 115, 22, 0.2);
+            color: #fb923c;
+        }
+        
+        .category-print {
+            background: rgba(239, 68, 68, 0.2);
+            color: #f87171;
+        }
+        
+        /* Search Bar */
+        .search-container {
+            position: relative;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .search-input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            padding: 1rem 1.5rem;
+            width: 100%;
+            color: var(--primary-light);
+            transition: all 0.3s ease;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent-coral);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        /* Stats Section */
+        .stats-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .stats-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-coral);
+        }
+        
+        .stats-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent-coral);
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Scroll Animations */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+        
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--primary-dark);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-coral);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--muted-blue);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav-glass fixed top-0 left-0 right-0 z-50 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="font-display text-xl font-bold text-white">
+                <a href="index.html">Design Portfolio</a>
+            </div>
+            
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="index.html" class="nav-link text-white hover:text-coral-400">Home</a>
+                <a href="projects.html" class="nav-link active text-white hover:text-coral-400">Projects</a>
+                <a href="about.html" class="nav-link text-white hover:text-coral-400">About</a>
+                <a href="contact.html" class="nav-link text-white hover:text-coral-400">Contact</a>
+            </div>
+            
+            <button class="md:hidden text-white" id="mobile-menu-btn">
+                <i class="fa-solid fa-bars text-xl"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="pt-32 pb-16 px-6">
+        <div class="max-w-7xl mx-auto text-center">
+            <h1 class="font-display text-5xl md:text-6xl font-bold mb-6 fade-in-up">Creative Projects</h1>
+            <p class="text-xl text-gray-300 max-w-3xl mx-auto mb-12 fade-in-up">
+                A comprehensive showcase of design work spanning web design, branding, UI/UX, and digital creative projects
+            </p>
+            
+            <!-- Project Stats -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto mb-16 fade-in-up">
+                <div class="stats-card">
+                    <div class="stats-number">50+</div>
+                    <div class="text-gray-400">Projects Completed</div>
+                </div>
+                <div class="stats-card">
+                    <div class="stats-number">25+</div>
+                    <div class="text-gray-400">Happy Clients</div>
+                </div>
+                <div class="stats-card">
+                    <div class="stats-number">15+</div>
+                    <div class="text-gray-400">Design Awards</div>
+                </div>
+                <div class="stats-card">
+                    <div class="stats-number">3</div>
+                    <div class="text-gray-400">Years Experience</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Filters -->
+    <section class="pb-12 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-wrap justify-center gap-4 mb-12 fade-in-up">
+                <button class="filter-btn active" data-filter="all">All Projects</button>
+                <button class="filter-btn" data-filter="web">Web Design</button>
+                <button class="filter-btn" data-filter="branding">Branding</button>
+                <button class="filter-btn" data-filter="uiux">UI/UX</button>
+                <button class="filter-btn" data-filter="mobile">Mobile Apps</button>
+                <button class="filter-btn" data-filter="print">Print Design</button>
+            </div>
+            
+            <!-- Search Bar -->
+            <div class="search-container mb-12 fade-in-up">
+                <input type="text" class="search-input" placeholder="Search projects..." id="project-search">
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Grid -->
+    <section class="pb-20 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="projects-grid">
+                
+                <!-- Web Design Projects -->
+                <div class="project-card" data-category="web" data-title="E-Commerce Platform Design">
+                    <div class="relative overflow-hidden">
+                        <img src="resources/project-web.jpg" alt="E-Commerce Platform" class="project-image">
+                        <div class="project-overlay">
+                            <span>View Case Study</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">E-Commerce Platform Design</h3>
+                        <p class="text-gray-400 mb-4">Modern e-commerce website with focus on user experience and conversion optimization</p>
+                        <div class="mb-4">
+                            <span class="category-badge category-web">Web Design</span>
+                            <span class="category-badge category-uiux">UI/UX</span>
+                        </div>
+                        <div class="flex items-center justify-between text-sm text-gray-500">
+                            <span>Adobe XD, Photoshop</span>
+                            <span>2024</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-card" data-category="web" data-title="Corporate Website Redesign">
+                    <div class="relative overflow-hidden">
+                        <img src="resources/project-web.jpg" alt="Corporate Website" class="project-image">
+                        <div class="project-overlay">
+                            <span>View Case Study</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">Corporate Website Redesign</h3>
+                        <p class="text-gray-400 mb-4">Complete overhaul of corporate identity with modern design principles</p>
+                        <div class="mb-4">
+                            <span class="category-badge category-web">Web Design</span>
+                            <span class="category-badge category-branding">Branding</span>
+                        </div>
+                        <div class="flex items-center justify-between text-sm text-gray-500">
+                            <span>Figma, Illustrator</span>
+                            <span>2024</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Branding Projects -->
+                <div class="project-card" data-category="branding" data-title="Brand Identity System">
+                    <div class="relative overflow-hidden">
+                        <img src="resources/project-branding.jpg" alt="Brand Identity" class="project-image">
+                        <div class="project-overlay">
+                            <span>View Case Study</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">Brand Identity System</h3>
+                        <p class="text-gray-400 mb-4">Complete brand identity including logo, typography, and visual guidelines</p>
+                        <div class="mb-4">
+                            <span class="category-badge category-branding">Branding</span>
+                            <span class="category-badge category-print">Print</span>
+                        </div>
+                        <div class="flex items-center justify-between text-sm text-gray-500">
+                            <span>Illustrator, InDesign</span>
+                            <span>2023</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-card" data-category="branding" data-title="Restaurant Branding">
+                    <div class="relative overflow-hidden">
+                        <img src="resources/project-branding.jpg" alt="Restaurant Branding" class="project-image">
+                        <div class="project-overlay">
+                            <span>View Case Study</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">Restaurant Branding</h3>
+                        <p class="text-gray-400 mb-4">Elegant brand identity for upscale dining establishment</p>
+                        <div class="mb-4">
+                            <span class="category-badge category-branding">Branding</span>
+                        </div>
+                        <div class="flex items-center justify-between text-sm text-gray-500">
+                            <span>Photoshop, Illustrator</span>
+                            <span>2023</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- UI/UX Projects -->
+                <div class="project-card" data-category="uiux" data-title="Mobile Banking App">
+                    <div class="relative overflow-hidden">
+                        <img src="resources/project-mobile.jpg" alt="Mobile Banking App" class="project-image">
+                        <div class="project-overlay">
+                            <span>View Case Study</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">Mobile Banking App</h3>
+                        <p class="text-gray-400 mb-4">Intuitive mobile banking application with focus on security and usability</p>
+                        <div class="mb-4">
+                            <span class="category-badge category-uiux">UI/UX</span>
+                            <span class="category-badge category-mobile">Mobile</span>
+                        </div>
+                        <div class="flex items-center justify-between text-sm text-gray-500">
+                            <span>Figma, Principle</span>
+                            <span>2024</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-card" data-category="uiux" data-title="Healthcare Dashboard">
+                    <div class="relative overflow-hidden">
+                        <img src="resources/project-mobile.jpg" alt="Healthcare Dashboard" class="project-image">
+                        <div class="project-overlay">
+                            <span>View Case Study</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">Healthcare Dashboard</h3>
+                        <p class="text-gray-400 mb-4">Comprehensive healthcare management system dashboard design</p>
+                        <div class="mb-4">
+                            <span class="category-badge category-uiux">UI/UX</span>
+                            <span class="category-badge category-web">Web Design</span>
+                        </div>
+                        <div class="flex items-center justify-between text-sm text-gray-500">
+                            <span>Adobe XD, Sketch</span>
+                            <span>2023</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Mobile App Projects -->
+                <div class="project-card" data-category="mobile" data-title="Fitness Tracking App">
+                    <div class="relative overflow-hidden">
+                        <img src="resources/project-mobile.jpg" alt="Fitness App" class="project-image">
+                        <div class="project-overlay">
+                            <span>View Case Study</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">Fitness Tracking App</h3>
+                        <p class="text-gray-400 mb-4">Comprehensive fitness tracking application with social features</p>
+                        <div class="mb-4">
+                            <span class="category-badge category-mobile">Mobile</span>
+                            <span class="category-badge category-uiux">UI/UX</span>
+                        </div>
+                        <div class="flex items-center justify-between text-sm text-gray-500">
+                            <span>Figma, After Effects</span>
+                            <span>2024</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-card" data-category="mobile" data-title="Travel Planning App">
+                    <div class="relative overflow-hidden">
+                        <img src="resources/project-mobile.jpg" alt="Travel App" class="project-image">
+                        <div class="project-overlay">
+                            <span>View Case Study</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">Travel Planning App</h3>
+                        <p class="text-gray-400 mb-4">All-in-one travel planning and booking application</p>
+                        <div class="mb-4">
+                            <span class="category-badge category-mobile">Mobile</span>
+                            <span class="category-badge category-uiux">UI/UX</span>
+                        </div>
+                        <div class="flex items-center justify-between text-sm text-gray-500">
+                            <span>Adobe XD, Photoshop</span>
+                            <span>2023</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Print Design Projects -->
+                <div class="project-card" data-category="print" data-title="Annual Report Design">
+                    <div class="relative overflow-hidden">
+                        <img src="resources/project-branding.jpg" alt="Annual Report" class="project-image">
+                        <div class="project-overlay">
+                            <span>View Case Study</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">Annual Report Design</h3>
+                        <p class="text-gray-400 mb-4">Comprehensive annual report with data visualization and infographics</p>
+                        <div class="mb-4">
+                            <span class="category-badge category-print">Print Design</span>
+                            <span class="category-badge category-branding">Branding</span>
+                        </div>
+                        <div class="flex items-center justify-between text-sm text-gray-500">
+                            <span>InDesign, Illustrator</span>
+                            <span>2023</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-card" data-category="print" data-title="Marketing Brochure">
+                    <div class="relative overflow-hidden">
+                        <img src="resources/project-branding.jpg" alt="Marketing Brochure" class="project-image">
+                        <div class="project-overlay">
+                            <span>View Case Study</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">Marketing Brochure</h3>
+                        <p class="text-gray-400 mb-4">Professional marketing collateral for B2B sales presentations</p>
+                        <div class="mb-4">
+                            <span class="category-badge category-print">Print Design</span>
+                        </div>
+                        <div class="flex items-center justify-between text-sm text-gray-500">
+                            <span>InDesign, Photoshop</span>
+                            <span>2024</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <!-- No Results Message -->
+            <div id="no-results" class="text-center py-16 hidden">
+                <div class="text-6xl mb-4"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></div>
+                <h3 class="text-2xl font-semibold mb-2">No projects found</h3>
+                <p class="text-gray-400">Try adjusting your search or filter criteria</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-20 px-6 bg-gradient-to-r from-coral-500/10 to-blue-500/10">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="font-display text-4xl md:text-5xl font-bold mb-6">Like What You See?</h2>
+            <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+                Let's discuss how we can bring your next project to life with exceptional design
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="contact.html" class="bg-coral-500 hover:bg-coral-600 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 hover:transform hover:scale-105">
+                    Start Your Project
+                </a>
+                <a href="about.html" class="border border-gray-400 hover:border-coral-500 text-white hover:text-coral-400 px-8 py-4 rounded-lg font-semibold transition-all duration-300">
+                    Learn About My Process
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 px-6 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto text-center">
+            <div class="font-display text-xl font-bold mb-4">Design Portfolio</div>
+            <p class="text-gray-400 mb-6">Creating exceptional digital experiences through thoughtful design</p>
+            <div class="flex justify-center space-x-6 mb-6">
+                <a href="#" class="text-gray-400 hover:text-coral-400 transition-colors">
+                    <i class="fa-brands fa-x-twitter text-2xl" aria-hidden="true"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-coral-400 transition-colors">
+                    <i class="fa-brands fa-linkedin-in text-2xl" aria-hidden="true"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-coral-400 transition-colors">
+                    <i class="fa-brands fa-dribbble text-2xl" aria-hidden="true"></i>
+                </a>
+            </div>
+            <p class="text-gray-500 text-sm">
+                © 2024 Design Portfolio. All rights reserved. Crafted with passion and precision.
+            </p>
+        </div>
+    </footer>
+    <script src="src/js/projects.js"></script>
+    <script src="src/js/main.js"></script>
+</body>
+</html>
+

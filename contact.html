@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Design Portfolio</title>
+    <meta name="description" content="Get in touch to discuss your next design project. Professional design services with a focus on quality and collaboration.">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Animation Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    
+    <style>
+        :root {
+            --primary-dark: #1a1a1a;
+            --primary-light: #fafafa;
+            --accent-coral: #ff6b6b;
+            --sage-green: #6c7b7f;
+            --soft-gray: #e8e8e8;
+            --muted-blue: #7c9885;
+            --warm-beige: #f5f3f0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, #2a2a2a 100%);
+            color: var(--primary-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .font-display {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+        }
+        
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        /* Navigation */
+        .nav-glass {
+            backdrop-filter: blur(20px);
+            background: rgba(26, 26, 26, 0.8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-coral);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+        
+        /* Contact Form */
+        .contact-form {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--primary-light);
+        }
+        
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--primary-light);
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+        
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--accent-coral);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+        }
+        
+        .form-input::placeholder,
+        .form-textarea::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .form-textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        
+        .form-error {
+            color: #ef4444;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+        
+        .form-error.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .form-success {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            color: #22c55e;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+        
+        .form-success.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* File Upload */
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+        
+        .file-input {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        
+        .file-upload-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .file-upload-label:hover {
+            border-color: var(--accent-coral);
+            background: rgba(255, 107, 107, 0.05);
+        }
+        
+        .file-upload.dragover .file-upload-label {
+            border-color: var(--accent-coral);
+            background: rgba(255, 107, 107, 0.1);
+        }
+        
+        /* Contact Info Cards */
+        .contact-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .contact-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-coral);
+            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.1);
+        }
+        
+        .contact-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        /* Availability Indicator */
+        .availability {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            color: #22c55e;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        
+        .availability-dot {
+            width: 8px;
+            height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        /* FAQ Section */
+        .faq-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .faq-question {
+            padding: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .faq-question:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .faq-answer {
+            padding: 0 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            color: var(--gray-300);
+        }
+        
+        .faq-item.active .faq-answer {
+            padding: 0 1.5rem 1.5rem;
+            max-height: 200px;
+        }
+        
+        .faq-icon {
+            transition: transform 0.3s ease;
+        }
+        
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+        
+        /* Scroll Animations */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+        
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--primary-dark);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-coral);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--muted-blue);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav-glass fixed top-0 left-0 right-0 z-50 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="font-display text-xl font-bold text-white">
+                <a href="index.html">Design Portfolio</a>
+            </div>
+            
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="index.html" class="nav-link text-white hover:text-coral-400">Home</a>
+                <a href="projects.html" class="nav-link text-white hover:text-coral-400">Projects</a>
+                <a href="about.html" class="nav-link text-white hover:text-coral-400">About</a>
+                <a href="contact.html" class="nav-link active text-white hover:text-coral-400">Contact</a>
+            </div>
+            
+            <button class="md:hidden text-white" id="mobile-menu-btn">
+                <i class="fa-solid fa-bars text-xl"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="pt-32 pb-16 px-6">
+        <div class="max-w-7xl mx-auto text-center">
+            <h1 class="font-display text-5xl md:text-6xl font-bold mb-6 fade-in-up">Let's Connect</h1>
+            <p class="text-xl text-gray-300 max-w-3xl mx-auto mb-8 fade-in-up">
+                Ready to bring your vision to life? I'd love to hear about your project and explore how we can create something amazing together.
+            </p>
+            
+            <!-- Availability Status -->
+            <div class="availability fade-in-up">
+                <div class="availability-dot"></div>
+                Available for new projects starting January 2025
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Information -->
+    <section class="pb-16 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-3 gap-8 mb-16">
+                <div class="contact-card fade-in-up">
+                    <span class="contact-icon"><i class="fa-solid fa-envelope" aria-hidden="true"></i></span>
+                    <h3 class="text-xl font-semibold mb-2">Email</h3>
+                    <p class="text-gray-400 mb-4">For project inquiries and collaborations</p>
+                    <a href="mailto:hello@designer.com" class="text-coral-400 hover:text-coral-300 transition-colors font-medium">
+                        hello@designer.com
+                    </a>
+                </div>
+                
+                <div class="contact-card fade-in-up">
+                    <span class="contact-icon"><i class="fa-solid fa-comments" aria-hidden="true"></i></span>
+                    <h3 class="text-xl font-semibold mb-2">Direct Message</h3>
+                    <p class="text-gray-400 mb-4">Quick questions and consultations</p>
+                    <button class="text-coral-400 hover:text-coral-300 transition-colors font-medium js-notification-btn" data-message="Chat feature coming soon!" data-type="info">
+                        Start Conversation
+                    </button>
+                </div>
+                
+                <div class="contact-card fade-in-up">
+                    <span class="contact-icon"><i class="fa-solid fa-calendar-days" aria-hidden="true"></i></span>
+                    <h3 class="text-xl font-semibold mb-2">Schedule Call</h3>
+                    <p class="text-gray-400 mb-4">30-minute discovery call</p>
+                    <button class="text-coral-400 hover:text-coral-300 transition-colors font-medium js-notification-btn" data-message="Calendar booking coming soon!" data-type="info">
+                        Book Meeting
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Form -->
+    <section class="pb-20 px-6">
+        <div class="max-w-4xl mx-auto">
+            <div class="contact-form fade-in-up">
+                <h2 class="font-display text-3xl font-bold mb-8 text-center">Start Your Project</h2>
+                
+                <form id="contact-form">
+                    <!-- Success Message -->
+                    <div id="form-success" class="form-success">
+                        <strong>Thank you!</strong> Your message has been sent successfully. I'll get back to you within 24 hours.
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="form-group">
+                            <label for="name" class="form-label">Full Name *</label>
+                            <input type="text" id="name" name="name" class="form-input" placeholder="Your full name" required>
+                            <div class="form-error" id="name-error">Please enter your name</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email" class="form-label">Email Address *</label>
+                            <input type="email" id="email" name="email" class="form-input" placeholder="your@email.com" required>
+                            <div class="form-error" id="email-error">Please enter a valid email address</div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="form-group">
+                            <label for="company" class="form-label">Company/Organization</label>
+                            <input type="text" id="company" name="company" class="form-input" placeholder="Your company name">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="budget" class="form-label">Project Budget</label>
+                            <select id="budget" name="budget" class="form-select">
+                                <option value="">Select budget range</option>
+                                <option value="under-5k">Under $5,000</option>
+                                <option value="5k-10k">$5,000 - $10,000</option>
+                                <option value="10k-25k">$10,000 - $25,000</option>
+                                <option value="25k-50k">$25,000 - $50,000</option>
+                                <option value="over-50k">Over $50,000</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="project-type" class="form-label">Project Type *</label>
+                        <select id="project-type" name="project-type" class="form-select" required>
+                            <option value="">Select project type</option>
+                            <option value="web-design">Web Design</option>
+                            <option value="mobile-app">Mobile App Design</option>
+                            <option value="branding">Branding & Identity</option>
+                            <option value="ui-ux">UI/UX Design</option>
+                            <option value="print-design">Print Design</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <div class="form-error" id="project-type-error">Please select a project type</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="timeline" class="form-label">Project Timeline</label>
+                        <select id="timeline" name="timeline" class="form-select">
+                            <option value="">Select timeline</option>
+                            <option value="asap">ASAP</option>
+                            <option value="1-month">Within 1 month</option>
+                            <option value="2-3-months">2-3 months</option>
+                            <option value="3-6-months">3-6 months</option>
+                            <option value="flexible">Flexible</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message" class="form-label">Project Description *</label>
+                        <textarea id="message" name="message" class="form-textarea" placeholder="Tell me about your project, goals, and any specific requirements..." required></textarea>
+                        <div class="form-error" id="message-error">Please describe your project</div>
+                    </div>
+                    
+                    <!-- File Upload -->
+                    <div class="form-group">
+                        <label class="form-label">Project Files (Optional)</label>
+                        <div class="file-upload" id="file-upload">
+                            <input type="file" id="project-files" name="project-files" class="file-input" multiple accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.sketch,.fig,.xd">
+                            <label for="project-files" class="file-upload-label">
+                                <i class="fa-solid fa-cloud-arrow-up text-3xl mx-auto mb-2" aria-hidden="true"></i>
+                                <span>Drop files here or click to upload</span>
+                                <p class="text-sm text-gray-400 mt-1">PDF, DOC, Images, Design files up to 10MB</p>
+                            </label>
+                        </div>
+                        <div id="file-list" class="mt-4 space-y-2"></div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <button type="submit" class="bg-coral-500 hover:bg-coral-600 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 hover:transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed" id="submit-btn">
+                            Send Message
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-20 px-6 bg-gradient-to-b from-transparent to-gray-900/20">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-16 fade-in-up">
+                <h2 class="font-display text-4xl md:text-5xl font-bold mb-6">Frequently Asked Questions</h2>
+                <p class="text-xl text-gray-300">
+                    Common questions about working together
+                </p>
+            </div>
+            
+            <div class="space-y-4 fade-in-up">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What's your typical project timeline?</span>
+                        <i class="fa-solid fa-chevron-down w-5 h-5 faq-icon" aria-hidden="true"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Project timelines vary depending on scope and complexity. A typical website design takes 4-6 weeks, while branding projects usually take 2-3 weeks. I'll provide a detailed timeline during our initial consultation.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Do you work with international clients?</span>
+                        <i class="fa-solid fa-chevron-down w-5 h-5 faq-icon" aria-hidden="true"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Absolutely! I work with clients worldwide and am experienced in managing projects across different time zones. Communication is key, and I adapt my schedule to ensure smooth collaboration.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What's included in your design process?</span>
+                        <i class="fa-solid fa-chevron-down w-5 h-5 faq-icon" aria-hidden="true"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>My process includes discovery and research, wireframing, visual design, prototyping, and final delivery. You'll receive regular updates, have opportunities for feedback, and get all necessary files and documentation.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>How do you handle revisions?</span>
+                        <i class="fa-solid fa-chevron-down w-5 h-5 faq-icon" aria-hidden="true"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>I include up to 3 rounds of revisions in all my projects. This ensures we can refine the design to perfectly match your vision while maintaining project efficiency.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What are your payment terms?</span>
+                        <i class="fa-solid fa-chevron-down w-5 h-5 faq-icon" aria-hidden="true"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>I typically work with a 50% deposit to start the project and 50% upon completion. For larger projects, we can arrange milestone-based payments. I accept bank transfers and major payment platforms.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 px-6 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto text-center">
+            <div class="font-display text-xl font-bold mb-4">Design Portfolio</div>
+            <p class="text-gray-400 mb-6">Creating exceptional digital experiences through thoughtful design</p>
+            <div class="flex justify-center space-x-6 mb-6">
+                <a href="#" class="text-gray-400 hover:text-coral-400 transition-colors">
+                    <i class="fa-brands fa-x-twitter text-2xl" aria-hidden="true"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-coral-400 transition-colors">
+                    <i class="fa-brands fa-linkedin-in text-2xl" aria-hidden="true"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-coral-400 transition-colors">
+                    <i class="fa-brands fa-dribbble text-2xl" aria-hidden="true"></i>
+                </a>
+            </div>
+            <p class="text-gray-500 text-sm">
+                © 2024 Design Portfolio. All rights reserved. Crafted with passion and precision.
+            </p>
+        </div>
+    </footer>
+    <script src="src/js/contact.js"></script>
+    <script src="src/js/main.js"></script>
+</body>
+</html>
+

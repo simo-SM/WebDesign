@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Design Portfolio</title>
+    <meta name="description" content="Learn about my design journey, skills, experience, and passion for creating exceptional digital experiences">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Animation Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    
+    <style>
+        :root {
+            --primary-dark: #1a1a1a;
+            --primary-light: #fafafa;
+            --accent-coral: #ff6b6b;
+            --sage-green: #6c7b7f;
+            --soft-gray: #e8e8e8;
+            --muted-blue: #7c9885;
+            --warm-beige: #f5f3f0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, #2a2a2a 100%);
+            color: var(--primary-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .font-display {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+        }
+        
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        /* Navigation */
+        .nav-glass {
+            backdrop-filter: blur(20px);
+            background: rgba(26, 26, 26, 0.8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-coral);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+        
+        /* Hero Section */
+        .hero-about {
+            background: linear-gradient(135deg, rgba(26, 26, 26, 0.8), rgba(42, 42, 42, 0.9)),
+                        url('resources/about-portrait.jpg') center/cover;
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+        
+        /* Skills Visualization */
+        .skill-chart {
+            width: 100%;
+            height: 300px;
+            margin: 2rem 0;
+        }
+        
+        .skill-bar {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            height: 12px;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 1rem;
+        }
+        
+        .skill-progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-coral), var(--muted-blue));
+            border-radius: 50px;
+            transition: width 1.5s ease;
+            width: 0;
+            position: relative;
+        }
+        
+        .skill-progress::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--accent-coral);
+            transform: translateX(-50%);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 3rem;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+        
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 1rem;
+            width: 12px;
+            height: 12px;
+            background: var(--accent-coral);
+            border-radius: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+        }
+        
+        .timeline-content {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            width: 45%;
+            position: relative;
+        }
+        
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-left: 55%;
+        }
+        
+        .timeline-item:nth-child(even) .timeline-content {
+            margin-right: 55%;
+        }
+        
+        .timeline-content::before {
+            content: '';
+            position: absolute;
+            top: 1rem;
+            width: 0;
+            height: 0;
+            border: 10px solid transparent;
+        }
+        
+        .timeline-item:nth-child(odd) .timeline-content::before {
+            left: -20px;
+            border-right-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .timeline-item:nth-child(even) .timeline-content::before {
+            right: -20px;
+            border-left-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Awards Section */
+        .award-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .award-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 107, 107, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .award-card:hover::before {
+            left: 100%;
+        }
+        
+        .award-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-coral);
+        }
+        
+        .award-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        /* Personal Interests */
+        .interest-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .interest-item:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-coral);
+            background: rgba(255, 107, 107, 0.1);
+        }
+        
+        .interest-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        /* Scroll Animations */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+        
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 1rem;
+            }
+            
+            .timeline-item::before {
+                left: 1rem;
+            }
+            
+            .timeline-content {
+                width: calc(100% - 3rem);
+                margin-left: 3rem !important;
+                margin-right: 0 !important;
+            }
+            
+            .timeline-content::before {
+                left: -20px !important;
+                right: auto !important;
+                border-right-color: rgba(255, 255, 255, 0.1) !important;
+                border-left-color: transparent !important;
+            }
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--primary-dark);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-coral);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--muted-blue);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav-glass fixed top-0 left-0 right-0 z-50 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="font-display text-xl font-bold text-white">
+                <a href="index.html">Design Portfolio</a>
+            </div>
+            
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="index.html" class="nav-link text-white hover:text-coral-400">Home</a>
+                <a href="projects.html" class="nav-link text-white hover:text-coral-400">Projects</a>
+                <a href="about.html" class="nav-link active text-white hover:text-coral-400">About</a>
+                <a href="contact.html" class="nav-link text-white hover:text-coral-400">Contact</a>
+            </div>
+            
+            <button class="md:hidden text-white" id="mobile-menu-btn">
+                <i class="fa-solid fa-bars text-xl"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-about">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="max-w-4xl">
+                <h1 class="font-display text-5xl md:text-6xl font-bold mb-6">About Me</h1>
+                <p class="text-xl md:text-2xl text-gray-300 leading-relaxed">
+                    A passionate designer dedicated to creating meaningful digital experiences that blend aesthetics with functionality
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Personal Introduction -->
+    <section class="py-20 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="fade-in-up">
+                    <img src="resources/about-portrait.jpg" alt="Designer Portrait" class="w-full max-w-md mx-auto rounded-lg shadow-2xl">
+                </div>
+                <div class="fade-in-up">
+                    <h2 class="font-display text-3xl md:text-4xl font-bold mb-6">Hello, I'm a Creative Designer</h2>
+                    <p class="text-lg text-gray-300 mb-6 leading-relaxed">
+                        With over 3 years of experience in the design industry, I've had the privilege of working with diverse clients ranging from startups to established enterprises. My passion lies in transforming complex problems into elegant, user-centered solutions.
+                    </p>
+                    <p class="text-lg text-gray-300 mb-6 leading-relaxed">
+                        I believe that great design is not just about making things look beautiful, but about creating experiences that are intuitive, accessible, and meaningful. Every project is an opportunity to tell a story and connect with users on an emotional level.
+                    </p>
+                    <p class="text-lg text-gray-300 mb-8 leading-relaxed">
+                        When I'm not designing, you'll find me exploring new design trends, experimenting with emerging technologies, or drawing inspiration from the world around me.
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="contact.html" class="bg-coral-500 hover:bg-coral-600 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 hover:transform hover:scale-105 text-center">
+                            Work With Me
+                        </a>
+                        <a href="#skills" class="border border-gray-400 hover:border-coral-500 text-white hover:text-coral-400 px-6 py-3 rounded-lg font-semibold transition-all duration-300 text-center">
+                            View My Skills
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="py-20 px-6 bg-gradient-to-b from-transparent to-gray-900/20" id="skills">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 fade-in-up">
+                <h2 class="font-display text-4xl md:text-5xl font-bold mb-6">Skills & Expertise</h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    A comprehensive skill set developed through years of hands-on experience and continuous learning
+                </p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-12">
+                <!-- Design Tools -->
+                <div class="fade-in-up">
+                    <h3 class="text-2xl font-semibold mb-8 text-center">Design Tools Proficiency</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="font-medium">Adobe Creative Suite</span>
+                                <span class="text-coral-400">95%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="95"></div>
+                            </div>
+                            <p class="text-sm text-gray-400 mt-1">Photoshop, Illustrator, InDesign, After Effects</p>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="font-medium">Figma</span>
+                                <span class="text-coral-400">92%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="92"></div>
+                            </div>
+                            <p class="text-sm text-gray-400 mt-1">UI/UX Design, Prototyping, Collaboration</p>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="font-medium">Sketch</span>
+                                <span class="text-coral-400">88%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="88"></div>
+                            </div>
+                            <p class="text-sm text-gray-400 mt-1">Vector Design, Symbols, Plugins</p>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="font-medium">Principle / Framer</span>
+                                <span class="text-coral-400">85%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="85"></div>
+                            </div>
+                            <p class="text-sm text-gray-400 mt-1">Interaction Design, Prototyping</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Design Disciplines -->
+                <div class="fade-in-up">
+                    <h3 class="text-2xl font-semibold mb-8 text-center">Design Disciplines</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="font-medium">UI/UX Design</span>
+                                <span class="text-coral-400">94%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="94"></div>
+                            </div>
+                            <p class="text-sm text-gray-400 mt-1">User Research, Wireframing, Prototyping</p>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="font-medium">Web Design</span>
+                                <span class="text-coral-400">91%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="91"></div>
+                            </div>
+                            <p class="text-sm text-gray-400 mt-1">Responsive Design, HTML/CSS Basics</p>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="font-medium">Branding & Identity</span>
+                                <span class="text-coral-400">89%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="89"></div>
+                            </div>
+                            <p class="text-sm text-gray-400 mt-1">Logo Design, Brand Guidelines, Strategy</p>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="font-medium">Print Design</span>
+                                <span class="text-coral-400">82%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="82"></div>
+                            </div>
+                            <p class="text-sm text-gray-400 mt-1">Layout Design, Typography, Prepress</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Professional Timeline -->
+    <section class="py-20 px-6">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16 fade-in-up">
+                <h2 class="font-display text-4xl md:text-5xl font-bold mb-6">Professional Journey</h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    Key milestones and experiences that have shaped my design career
+                </p>
+            </div>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3 class="text-xl font-semibold mb-2 text-coral-400">Senior UI/UX Designer</h3>
+                        <p class="text-gray-400 mb-2">Tech Innovation Studio • 2023 - Present</p>
+                        <p class="text-gray-300">Leading design initiatives for enterprise software solutions, managing a team of 3 junior designers, and establishing design systems that improved development efficiency by 40%.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3 class="text-xl font-semibold mb-2 text-coral-400">Freelance Designer</h3>
+                        <p class="text-gray-400 mb-2">Independent • 2021 - 2023</p>
+                        <p class="text-gray-300">Built a successful freelance practice working with 25+ clients across various industries. Specialized in brand identity, web design, and mobile app interfaces. Achieved 98% client satisfaction rate.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3 class="text-xl font-semibold mb-2 text-coral-400">Graphic Designer</h3>
+                        <p class="text-gray-400 mb-2">Creative Agency • 2020 - 2021</p>
+                        <p class="text-gray-300">Developed visual identities for emerging startups, created marketing collateral, and collaborated with cross-functional teams to deliver comprehensive brand experiences.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3 class="text-xl font-semibold mb-2 text-coral-400">Design Degree</h3>
+                        <p class="text-gray-400 mb-2">Art & Design University • 2016 - 2020</p>
+                        <p class="text-gray-300">Bachelor of Fine Arts in Graphic Design. Graduated Magna Cum Laude with focus on digital design and user experience. Recipient of the Outstanding Student Designer Award.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Awards & Recognition -->
+    <section class="py-20 px-6 bg-gradient-to-b from-transparent to-gray-900/20">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 fade-in-up">
+                <h2 class="font-display text-4xl md:text-5xl font-bold mb-6">Awards & Recognition</h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    Acknowledgments that validate my commitment to design excellence
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="award-card fade-in-up">
+                    <div class="award-icon"><i class="fa-solid fa-trophy" aria-hidden="true"></i></div>
+                    <h3 class="text-xl font-semibold mb-2">Design Excellence Award</h3>
+                    <p class="text-gray-400 mb-2">Creative Industry Association • 2024</p>
+                    <p class="text-gray-300">Recognized for outstanding contribution to digital design innovation</p>
+                </div>
+                
+                <div class="award-card fade-in-up">
+                    <div class="award-icon"><i class="fa-solid fa-medal" aria-hidden="true"></i></div>
+                    <h3 class="text-xl font-semibold mb-2">Best Mobile App Design</h3>
+                    <p class="text-gray-400 mb-2">Design Awards • 2023</p>
+                    <p class="text-gray-300">Gold award for innovative mobile banking application interface</p>
+                </div>
+                
+                <div class="award-card fade-in-up">
+                    <div class="award-icon"><i class="fa-solid fa-star" aria-hidden="true"></i></div>
+                    <h3 class="text-xl font-semibold mb-2">Featured Designer</h3>
+                    <p class="text-gray-400 mb-2">Design Magazine • 2023</p>
+                    <p class="text-gray-300">Profiled as emerging talent in the design community</p>
+                </div>
+                
+                <div class="award-card fade-in-up">
+                    <div class="award-icon"><i class="fa-solid fa-palette" aria-hidden="true"></i></div>
+                    <h3 class="text-xl font-semibold mb-2">Creative Innovation Prize</h3>
+                    <p class="text-gray-400 mb-2">Tech Design Summit • 2022</p>
+                    <p class="text-gray-300">Honored for groundbreaking approach to user interface design</p>
+                </div>
+                
+                <div class="award-card fade-in-up">
+                    <div class="award-icon"><i class="fa-solid fa-users" aria-hidden="true"></i></div>
+                    <h3 class="text-xl font-semibold mb-2">Team Leadership Award</h3>
+                    <p class="text-gray-400 mb-2">Company Recognition • 2024</p>
+                    <p class="text-gray-300">Acknowledged for exceptional design team mentorship and leadership</p>
+                </div>
+                
+                <div class="award-card fade-in-up">
+                    <div class="award-icon"><i class="fa-solid fa-crown" aria-hidden="true"></i></div>
+                    <h3 class="text-xl font-semibold mb-2">Client Choice Award</h3>
+                    <p class="text-gray-400 mb-2">Freelance Platform • 2023</p>
+                    <p class="text-gray-300">Top-rated designer based on client feedback and satisfaction</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Personal Interests -->
+    <section class="py-20 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16 fade-in-up">
+                <h2 class="font-display text-4xl md:text-5xl font-bold mb-6">Beyond Design</h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    Personal interests and hobbies that inspire my creative process
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="interest-item fade-in-up">
+                    <div class="interest-icon"><i class="fa-solid fa-camera" aria-hidden="true"></i></div>
+                    <h3 class="text-lg font-semibold mb-2">Photography</h3>
+                    <p class="text-gray-400">Capturing moments and perspectives that inspire visual storytelling</p>
+                </div>
+                
+                <div class="interest-item fade-in-up">
+                    <div class="interest-icon"><i class="fa-solid fa-pen-nib" aria-hidden="true"></i></div>
+                    <h3 class="text-lg font-semibold mb-2">Digital Art</h3>
+                    <p class="text-gray-400">Exploring creative expression through digital mediums and techniques</p>
+                </div>
+                
+                <div class="interest-item fade-in-up">
+                    <div class="interest-icon"><i class="fa-solid fa-leaf" aria-hidden="true"></i></div>
+                    <h3 class="text-lg font-semibold mb-2">Sustainability</h3>
+                    <p class="text-gray-400">Advocating for eco-friendly design practices and sustainable solutions</p>
+                </div>
+                
+                <div class="interest-item fade-in-up">
+                    <div class="interest-icon"><i class="fa-solid fa-plane-departure" aria-hidden="true"></i></div>
+                    <h3 class="text-lg font-semibold mb-2">Travel</h3>
+                    <p class="text-gray-400">Drawing inspiration from diverse cultures and global design perspectives</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-20 px-6 bg-gradient-to-r from-coral-500/10 to-blue-500/10">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="font-display text-4xl md:text-5xl font-bold mb-6">Let's Create Together</h2>
+            <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+                I'm always excited to collaborate on meaningful projects and bring innovative ideas to life
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="contact.html" class="bg-coral-500 hover:bg-coral-600 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 hover:transform hover:scale-105">
+                    Start a Conversation
+                </a>
+                <a href="projects.html" class="border border-gray-400 hover:border-coral-500 text-white hover:text-coral-400 px-8 py-4 rounded-lg font-semibold transition-all duration-300">
+                    View My Work
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 px-6 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto text-center">
+            <div class="font-display text-xl font-bold mb-4">Design Portfolio</div>
+            <p class="text-gray-400 mb-6">Creating exceptional digital experiences through thoughtful design</p>
+            <div class="flex justify-center space-x-6 mb-6">
+                <a href="#" class="text-gray-400 hover:text-coral-400 transition-colors">
+                    <i class="fa-brands fa-x-twitter text-2xl" aria-hidden="true"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-coral-400 transition-colors">
+                    <i class="fa-brands fa-linkedin-in text-2xl" aria-hidden="true"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-coral-400 transition-colors">
+                    <i class="fa-brands fa-dribbble text-2xl" aria-hidden="true"></i>
+                </a>
+            </div>
+            <p class="text-gray-500 text-sm">
+                © 2024 Design Portfolio. All rights reserved. Crafted with passion and precision.
+            </p>
+        </div>
+    </footer>
+
+    <script src="src/js/about.js"></script>
+    <script src="src/js/main.js"></script>
+</body>
+</html>
